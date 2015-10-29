@@ -1,0 +1,27 @@
+{
+  "name": "aethernauts-tooling",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/darkhounds/aethernauts-tooling.git"
+  },
+  "author": "fppgodinho@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/darkhounds/aethernauts-tooling/issues"
+  },
+  "homepage": "https://gitlab.com/darkhounds/aethernauts-tooling#README",
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  },
+  "dependencies": {
+    "express": "^4.13.3",
+    "passport": "^0.3.0",
+    "sqlite3": "^3.1.0"
+  }
+}

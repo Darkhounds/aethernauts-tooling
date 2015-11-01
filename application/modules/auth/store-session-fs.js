@@ -6,7 +6,6 @@ var fs              = require('fs');
 function Contructor(){
     Store.call(this);
     //
-    var _sessions   = {};
     var _self       = this;
     //
     this.folder     = "./";
@@ -74,7 +73,7 @@ function Contructor(){
     //
     this.set        = function(sid, session, callback)                                                                  {
         var file = _self.folder + "/" + sid;
-        console.log(_self.folder, file);
+        //
         mkdirp(_self.folder, function(err)                                                                              {
             if (err) return callback(err);
             fs.writeFile(file, JSON.stringify(session),function(err)                                                    {

@@ -2,14 +2,19 @@ var router          = require('express').Router();
 var cookieParser    = require('cookie-parser');
 var bodyParser      = require('body-parser');
 var session         = require('express-session');
+var memStore        = require('./session-store-memory');
+var fsStore         = require('./session-store-fs');
+var path            = require('path');
 var passport        = require('passport');
 var GoogleStrategy  = require('passport-google-oauth').OAuth2Strategy;
 
 
-
 module.exports = new function(app)                                                                                      {
+    fsStore.folder = path.resolve(__dirname + "../../../../data/sessions");
+
     var _sessionCfg = {
         secret:             'somethingelse',
+        store:              fsStore,
         resave:             true,
         saveUninitialized:  true
     };

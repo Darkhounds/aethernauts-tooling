@@ -1,8 +1,8 @@
 var app             = require('express')();
 
-require('./modules/logging/controller').attachTo(app);
-require('./modules/public/controller').attachTo(app);
-require('./modules/auth/controller').attachTo(app);
+require('./modules/logging/router').attachTo(app);
+require('./modules/public/router').attachTo(app);
+require('./modules/auth/router').attachTo(app);
 
 var server = app.listen(80, '0.0.0.0', function () {
     var host = server.address().address;

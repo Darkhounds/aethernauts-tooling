@@ -22,6 +22,7 @@ gulp.task('server-start', function() {
     _startServer()
 });
 
+
 var _server = null;
 function _startServer(){
     if (_server) _server.kill();

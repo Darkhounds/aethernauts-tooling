@@ -1,32 +1,35 @@
 var router          = require('express').Router();
-//var cookieParser    = require('cookie-parser');
-//var bodyParser      = require('body-parser');
-//var session         = require('express-session');
-//var passport        = require('passport');
-//var GoogleStrategy  = require('passport-google-oauth').OAuth2Strategy;
+var cookieParser    = require('cookie-parser');
+var bodyParser      = require('body-parser');
+var session         = require('express-session');
+var passport        = require('passport');
+var GoogleStrategy  = require('passport-google-oauth').OAuth2Strategy;
 
 
-//app.use(cookieParser()); // read cookies (needed for auth)
-//app.use(bodyParser()); // get information from html forms
-//app.use(session({ secret: 'somethingelse' })); // session secret
-//app.use(passport.initialize());
-//app.use(passport.session()); // persistent login sessions
 
-module.exports = new function(app){
-    router.use(function timeLog(req, res, next) {
-        console.log('Time: ', new Date().toUTCString().slice(0, -4), req.originalUrl);
+module.exports = new function(app)                                                                                      {
+    var _sessionCfg = {
+        secret:             'somethingelse',
+        resave:             true,
+        saveUninitialized:  true
+    };
+
+    router.use(function(req, res, next){
+        console.log("Restricted area...");
         next();
     });
 
-    router.get('/', function(req, res) {
+    router.use(cookieParser());
+    router.use(bodyParser.urlencoded({extended: true}));
+    router.use(bodyParser.json());
+    router.use(session(_sessionCfg));
+    router.use(passport.initialize());
+    router.use(passport.session());
+
+    router.get('/', function(req, res)                                                                                  {
+        console.log("Dooiiisss");
         res.send('Root page...');
     });
 
-    router.get('/about', function(req, res) {
-        res.send('About page...');
-    });
-
-    this.attachTo = function (app) {
-        app.use('/', router);
-    };
+    this.attachTo = function (app) { app.use('/', router);                                                              };
 }();

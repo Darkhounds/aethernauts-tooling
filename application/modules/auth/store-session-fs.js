@@ -30,7 +30,7 @@ function Contructor(){
     };
     //
     this.destroy    = function(sid, callback)                                                                           {
-        var file = _self.folder + "/" + sid;
+        var file = _self.folder + "/" + sid + ".json";
         mkdirp(_self.folder, function(err)                                                                              {
             if (err) return callback(err);
             fs.unlink(file, function(err) { return callback(err);                                                       });
@@ -61,7 +61,7 @@ function Contructor(){
     };
     //
     this.get        = function(sid, callback)                                                                           {
-        var file = _self.folder + "/" + sid;
+        var file = _self.folder + "/" + sid + ".json";
         mkdirp(_self.folder, function(err)                                                                              {
             if (err) return callback(err);
             fs.readFile(file, function(err, data)                                                                       {
@@ -72,7 +72,7 @@ function Contructor(){
     };
     //
     this.set        = function(sid, session, callback)                                                                  {
-        var file = _self.folder + "/" + sid;
+        var file = _self.folder + "/" + sid + ".json";
         //
         mkdirp(_self.folder, function(err)                                                                              {
             if (err) return callback(err);

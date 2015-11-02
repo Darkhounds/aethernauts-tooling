@@ -5,10 +5,10 @@ var session         = require('express-session');
 var passport        = require('passport');
 var flash           = require('connect-flash');
 //
-var sessionStoreMem = require('./store-session-memory');
+//var sessionStoreMem = require('./store-session-memory');
 var sessionStoreFS  = require('./store-session-fs');
 var usersStoreFS    = require('./store-users-fs');
-var strategyGoogle  = require('./strategies');
+var strategies      = require('./strategies');
 //
 module.exports = new function()                                                                                         {
     this.attachTo = function (app) { app.use('/', router);                                                              };
@@ -20,12 +20,6 @@ module.exports = new function()                                                 
         }
     });
     this.dataFolder                 = './data';
-    //
-    this.isLoggedIn = function(req, res, next)                                                                          {
-        if (req.isAuthenticated()) return next();
-        //
-        res.redirect('/restricted');
-    };
     //
     var _sessionCfg = {
         secret:             'somethingelse',
@@ -42,25 +36,17 @@ module.exports = new function()                                                 
     router.use(passport.session());
     router.use(flash());
     //
-    strategyGoogle.attachTo(passport);
+    strategies.attachTo(passport);
     //
-    router.use(this.isLoggedIn, function(req, res, next)                                                                {
-        console.log("Restricted area...");
+    router.get('/auth/login', passport.authenticate('google', { scope : ['profile', 'email'] }));
+    router.get('/auth/callback', passport.authenticate('google', {
+        successRedirect : '/profile',
+        failureRedirect : '/auth/login'
+    }));
+    //
+    router.use(strategies.isLoggedIn, function(req, res, next)                                                          {
         next();
     });
-    //
-    router.get('/auth/login', passport.authenticate('local-login',                                                      {
-        //successRedirect : '/about', // redirect to the secure profile section
-        //failureRedirect : '/about', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
-    //
-    router.get('/auth/signup', passport.authenticate('local-signup',                                                    {
-        //successRedirect : '/profile', // redirect to the secure profile section
-        //failureRedirect : '/signup', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
-    //
     // =====================================
     // PROFILE SECTION =====================
     // =====================================

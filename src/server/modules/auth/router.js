@@ -62,7 +62,7 @@ module.exports = new function()                                                 
     // LOGOUT ==============================
     // =====================================
     router.get('/auth/logout', function(req, res)                                                                       {
-        //req.logout();
-        //res.redirect('/');
+        req.logout();
+        res.redirect('/about');
     });
 }();

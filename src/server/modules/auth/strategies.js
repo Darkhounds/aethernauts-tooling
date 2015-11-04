@@ -3,15 +3,6 @@ var GoogleStrategy  = require('passport-google-oauth').OAuth2Strategy;
 var usersStoreFS    = require('./store-users-fs');
 
 module.exports = new function()                                                                                         {
-    //GoogleStrategy.prototype.userProfile = function(token, done) {
-    //    done(null, {})
-    //};
-
-    var strategyConfig = {
-        usernameField:      'email',
-        passwordField:      'password',
-        passReqToCallback:  true
-    };
     //
     var googleConfig    = {
         clientID :          '619853354672-3d3g3geh9banql1048hmoaguhu5fegmm.apps.googleusercontent.com',

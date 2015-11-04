@@ -9,14 +9,12 @@ var rename      = require('gulp-rename');
 var sourcemaps  = require('gulp-sourcemaps');
 var jade        = require('gulp-jade');
 var minifyHTML  = require('gulp-minify-html');
+var stylus      = require('gulp-stylus');
 var htmlreplace = require('gulp-html-replace');
 
-browserify.add('./src/client/bootstrap.js');
-browserify.external(require.resolve('react', {expose: 'react'}));
-browserify.require('./src/client/bootstrap.js');
-browserify.require('react');
+gulp.task('default', ['client-compile', 'server']);
 
-gulp.task('default', ['client-compile'], function()                                                                                         {
+gulp.task('server', ['client-compile'], function()                                                                      {
     console.log("\n Watching gulpfile.js and Server code:\n");
     //
     gulp.watch(['gulpfile.js'], function()                                                                              {
@@ -29,8 +27,6 @@ gulp.task('default', ['client-compile'], function()                             
         _startServer()
     });
     //
-    gulp.watch('./src/client/**/*.*', ['client-compile']);
-    //
     _startServer();
 });
 
@@ -38,7 +34,31 @@ gulp.task('server-start', function()                                            
     _startServer()
 });
 
-gulp.task('client-compile', ['client-copy-html', 'client-compile-jade'], function()                                     {
+var _server = null;
+function _startServer()                                                                                                 {
+    if (_server) _server.kill();
+    _server = spawn('node', ['src/server/run.js'], {stdio: [0, 1, 2]});
+    _server.on('close', function (code) {
+        if (code === 8) {
+            gulp.log('Error detected, waiting for changes...');
+        }
+    });
+}
+
+browserify.add('./src/client/bootstrap.js');
+browserify.external(require.resolve('react', {expose: 'react'}));
+browserify.require('./src/client/bootstrap.js');
+browserify.require('react');
+
+gulp.task('client', ['client-compile'], function()                                                                      {
+    console.log("\n Watching Client code:\n");
+    //
+    gulp.watch('./src/client/**/*.*', ['client-compile'], function(){
+        console.warn("\n --- Client code has been edited, recompiling...");
+    });
+});
+
+gulp.task('client-compile', ['client-copy-html', 'client-compile-jade', 'client-compile-stylus'], function()            {
     browserify.bundle()
         .pipe(source('main.js'))
         .pipe(buffer())
@@ -51,7 +71,7 @@ gulp.task('client-compile', ['client-copy-html', 'client-compile-jade'], functio
 gulp.task('client-compile-jade', function()                                                                             {
     return gulp.src('./src/client/**/*.jade')
         .pipe(jade({locals: {}}))
-        .pipe(gulp.dest('./dist/'))
+        .pipe(gulp.dest('./public/'))
 });
 
 gulp.task('client-copy-html', function()                                                                                {
@@ -63,18 +83,20 @@ gulp.task('client-copy-html', function()                                        
         .pipe(gulp.dest('./public/'));
 });
 
+gulp.task('client-compile-stylus', ['client-stylus-sourcemaps'], function ()                                            {
 
+});
 
-var _server = null;
-function _startServer()                                                                                                 {
-    if (_server) _server.kill();
-    _server = spawn('node', ['src/server/run.js'], {stdio: [0, 1, 2]});
-    _server.on('close', function (code) {
-        if (code === 8) {
-            gulp.log('Error detected, waiting for changes...');
-        }
-    });
-}
+gulp.task('client-stylus-sourcemaps', function ()                                                                       {
+    return gulp.src('./src/client/**/*.styl')
+        .pipe(sourcemaps.init())
+        .pipe(stylus({
+            compress: true
+        }))
+        .pipe(concat('main.css'))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('./public/css/'));
+});
 
 process.on('exit', function()                                                                                           {
     if (_server) _server.kill()

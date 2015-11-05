@@ -3,10 +3,24 @@ html(lang="en")
     head
         meta(charset="UTF-8")
         title Aethernauts Tooling
+        link(rel="stylesheet" href="/css/main.css")
         script(language="JavaScript" type="text/javascript" src="/lib/application/main.js")
     body
-        div#TOP
-        div#LEFT
-        div#CENTER
-        div#RIGHT
-        div#BOTTOM
+        div#LAYOUT
+            div#TOP
+                div#HEADER.frame
+                    include core/html/part/header
+                div#NAV.frame
+                    include core/html/part/nav
+            div#MIDDLE
+                div#LEFT.frame
+                    include core/html/part/menu
+                div#CENTER.frame
+                    include core/html/part/content
+                div#RIGHT.frame
+                    include core/html/part/banner
+            div#BOTTOM
+                div#MAP.frame
+                    include core/html/part/map
+                div#FOOTER.frame
+                    include core/html/part/footer

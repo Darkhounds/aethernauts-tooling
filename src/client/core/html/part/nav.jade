@@ -1,0 +1,10 @@
+ul
+    li Home
+    li Register
+    li
+        script.
+            function onLoginClick(){
+                window.open('/auth/html/google-login.html', 'google-oauth', 'height=400,width=500');
+            }
+        a(href="/auth/html/google-login.html" onclick="onLoginClick()" target="google-oauth") Login
+

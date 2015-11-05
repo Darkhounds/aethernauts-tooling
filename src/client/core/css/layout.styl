@@ -1,0 +1,63 @@
+.frame
+  border solid 1px #000000
+
+html, body, #LAYOUT
+  margin 0px
+  padding 0px
+
+html
+  width 100%
+  height 100%
+
+  body
+    width       100vw
+    height      100vh
+
+    #LAYOUT
+      width           100vw
+      min-height      100vh
+      display         flex
+      flex-direction: column
+
+      #TOP
+        height          104px
+        display         flex
+        flex-direction: column
+
+        #HEADER
+          height          70px
+        #NAV
+          height          30px
+          line-height     30px
+
+      #MIDDLE
+        display         flex
+        flex-direction: row
+        flex:           1
+
+        #LEFT
+          width         100px
+        #CENTER
+          flex          1
+        #RIGHT
+          width         100px
+
+      #BOTTOM
+        height          64px
+        display         flex
+        flex-direction: column
+
+        #MAP
+          height          30px
+          line-height     30px
+        #FOOTER
+          height          30px
+          line-height     30px
+
+@require "./part/header.styl"
+@require "./part/nav.styl"
+@require "./part/left.styl"
+@require "./part/center.styl"
+@require "./part/right.styl"
+@require "./part/map.styl"
+@require "./part/footer.styl"

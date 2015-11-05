@@ -1,0 +1,12 @@
+doctype html
+html(lang="en")
+    head
+        script.
+            var OAUTHURL    =   'https://accounts.google.com/o/oauth2/auth?';
+            var VALIDURL    =   'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=';
+            var SCOPE       =   'https://www.googleapis.com/auth/userinfo.profile';
+            var CLIENTID    =   '619853354672-3d3g3geh9banql1048hmoaguhu5fegmm.apps.googleusercontent.com';
+            var REDIRECT    =   'http://localhost/auth/html/google-login-confirm.html'
+            var TYPE        =   'token';
+            window.location = OAUTHURL + 'scope=' + SCOPE + '&client_id=' + CLIENTID + '&redirect_uri=' + REDIRECT + '&response_type=' + TYPE;
+    body

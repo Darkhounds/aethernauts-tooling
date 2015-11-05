@@ -12,9 +12,9 @@ var minifyHTML  = require('gulp-minify-html');
 var stylus      = require('gulp-stylus');
 var htmlreplace = require('gulp-html-replace');
 
-gulp.task('default', ['client-compile', 'server']);
+gulp.task('default', ['server']);
 
-gulp.task('server', ['client-compile'], function()                                                                      {
+gulp.task('server', function()                                                                                          {
     console.log("\n Watching gulpfile.js and Server code:\n");
     //
     gulp.watch(['gulpfile.js'], function()                                                                              {
@@ -53,25 +53,19 @@ browserify.require('react');
 gulp.task('client', ['client-compile'], function()                                                                      {
     console.log("\n Watching Client code:\n");
     //
-    gulp.watch('./src/client/**/*.*', ['client-compile'], function(){
+    return gulp.watch('./src/client/**/*.*', ['client-compile'], function(){
         console.warn("\n --- Client code has been edited, recompiling...");
     });
 });
 
 gulp.task('client-compile', ['client-copy-html', 'client-compile-jade', 'client-compile-stylus'], function()            {
-    browserify.bundle()
+    return browserify.bundle()
         .pipe(source('main.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
         .pipe(uglify())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./public/lib/application/'));
-});
-
-gulp.task('client-compile-jade', function()                                                                             {
-    return gulp.src('./src/client/**/*.jade')
-        .pipe(jade({locals: {}}))
-        .pipe(gulp.dest('./public/'))
 });
 
 gulp.task('client-copy-html', function()                                                                                {
@@ -83,12 +77,14 @@ gulp.task('client-copy-html', function()                                        
         .pipe(gulp.dest('./public/'));
 });
 
-gulp.task('client-compile-stylus', ['client-stylus-sourcemaps'], function ()                                            {
-
+gulp.task('client-compile-jade', function()                                                                             {
+    return gulp.src(['./src/client/**/*.jade', '!**/part/*.*'])
+        .pipe(jade({locals: {}}))
+        .pipe(gulp.dest('./public/'))
 });
 
-gulp.task('client-stylus-sourcemaps', function ()                                                                       {
-    return gulp.src('./src/client/**/*.styl')
+gulp.task('client-compile-stylus', function ()                                                                          {
+    return gulp.src(['./src/client/**/*.styl', '!**/part/*.*'])
         .pipe(sourcemaps.init())
         .pipe(stylus({
             compress: true
@@ -97,6 +93,7 @@ gulp.task('client-stylus-sourcemaps', function ()                               
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./public/css/'));
 });
+
 
 process.on('exit', function()                                                                                           {
     if (_server) _server.kill()

@@ -1,31 +1,31 @@
-//var LocalStrategy   = require('passport-local').Strategy;
-//var PassportHTTP    = require('passport-http').DigestStrategy;
-//var GoogleStrategy  = require('passport-google-oauth').OAuth2Strategy;
 var https           = require('https');
 var url             = require('url');
+var usersStoreFS    = require('./../../model/store-users-fs');
 var CustomStrategy  = require('passport-custom').Strategy;
-var usersStoreFS    = require('./store-users-fs');
 
 module.exports = new function()                                                                                         {
     var _self = this;
     //
     this.attachTo = function (passport)                                                                                 {
+        // -------------------------------------------------------------------------------------------------------------
+        // { region: Shared Stuff
+        //
         passport.serializeUser(function(user, done)                                                                     {
-            console.log("--------> strategies::serializeUser", user.email);
             done(null, user.email);
         });
         //
         passport.deserializeUser(function(email, done)                                                                  {
-            console.log("--------> strategies::deserializeUser", email);
             usersStoreFS.get(email, function(err, user)                                                                 {
                 done(err, user);
             });
         });
-
-        // =========================================================================
-        // GOOGLE ==================================================================
-        // =========================================================================
-        passport.use('googleauth', new CustomStrategy(function(req, callback) {
+        //
+        // } endregion
+        // -------------------------------------------------------------------------------------------------------------
+        // -------------------------------------------------------------------------------------------------------------
+        // { region: Google OAuth
+        //
+        passport.use('googleauth', new CustomStrategy(function(req, callback)                                           {
             var params = url.parse(req.url, true).query;
             // Request user profile from google
             _requestGoogleProfile(params.access_token, function(err, data)                                              {
@@ -51,15 +51,15 @@ module.exports = new function()                                                 
                     if (user) return callback(null, user);
 
                     // Create new user with this email:
-                    _registerUser(email, data, function(err, user)                                                      {
+                    _registerGoogleUser(email, data, function(err, user)                                                {
                         if (err) return callback(err);
                         callback(null, user);
-                    })
+                    });
                 });
             });
         }));
-
-        function _registerUser(email, data, callback)                                                                   {
+        //
+        function _registerGoogleUser(email, data, callback)                                                             {
             var user = {
                 email:      email,
                 firstName:  data.name?data.name.givenName:email.substr(0, email.indexOf('@')),
@@ -69,8 +69,8 @@ module.exports = new function()                                                 
             };
             usersStoreFS.create(email, user, callback);
         }
-
-        function _requestGoogleProfile(token, callback){
+        //
+        function _requestGoogleProfile(token, callback)                                                                 {
             https.request({
                 host: 'www.googleapis.com',
                 path: '/plus/v1/people/me?access_token=' + token
@@ -79,21 +79,16 @@ module.exports = new function()                                                 
                 stream.on('data', function(chunk){ data += chunk; });
                 stream.on('end', function() {
                     try {
-                        callback(null, JSON.parse(data));
+                        parsedData = JSON.parse(data);
+                        callback(parsedData.error?parsedData:null, parsedData.error?null:parsedData);
                     } catch (e) {
                         callback(data);
                     }
                 });
             }).end();
         }
+        //
+        // } endregion
+        // -------------------------------------------------------------------------------------------------------------
     };
-    //
-    //this.isLoggedIn = function(req, res, next)                                                                          {
-    //    console.log("--------> strategies::isLoggedIn", req.isAuthenticated());
-    //    //
-    //    if (req.isAuthenticated()) return next();
-    //    //
-    //    res.redirect('/restricted');
-    //};
-    ////
 }();

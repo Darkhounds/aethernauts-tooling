@@ -1,18 +1,25 @@
 var express             = require('express');
 var app                 = express();
+var cookieParser        = require('cookie-parser');
+var bodyParser          = require('body-parser');
 var path                = require('path');
+var storeSessionFS      = require('./model/store-session-fs');
+var storeUsersFS        = require('./model/store-users-fs');
 
-var loggingRouter       = require('./logging/router');
-loggingRouter.attachTo(app);
+var dataPath            = path.resolve(__dirname + '/../../data');
+storeSessionFS.folder   = dataPath + "/sessions";
+storeUsersFS.folder     = dataPath + "/users";
+
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
+require('./logging/router').attachTo(app);
 
 app.use(express.static(path.resolve(__dirname + '/../../public')));
 
-var publicRouter        = require('./api/public/router');
-publicRouter.attachTo(app);
-
-var authRouter          = require('./api/auth/router');
-authRouter.dataFolder   = path.resolve(__dirname + '/../../data');
-authRouter.attachTo(app);
+require('./api/public/router').attachTo(app);
+require('./api/auth/router').attachTo(app);
 
 var server = app.listen(80, '0.0.0.0', function () {
     var host = server.address().address;

@@ -4,5 +4,26 @@ html(lang="en")
         meta(charset="UTF-8")
         title Aethernauts Tooling
         link(rel="stylesheet" href="/css/main.css")
+        script.
+            var hash    = window.location.hash.substr(1);
+            var pairs   = hash.split('&');
+            var params  = {}
+            for (var i in pairs){
+                var pair    = pairs[i].split('=');
+                params[pair[0]] = pair[1];
+            }
+
+            request('/api/auth/googleauth?' + hash, function(event) {
+                console.log("1 -->", event.target.readyState, event.target.responseText);
+            });
+
+            function request(url, callback) {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.onreadystatechange = callback
+                xmlHttp.open( "GET", url, false ); // false for synchronous request
+                xmlHttp.send( null );
+                return xmlHttp;
+            }
+
     body
         div Popup - Confirmed

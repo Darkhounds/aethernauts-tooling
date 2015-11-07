@@ -2,17 +2,15 @@ var express             = require('express');
 var app                 = express();
 var path                = require('path');
 
-app.set('views', path.resolve(__dirname + '/views'));
-app.set('view engine', 'jade');
-app.use(express.static(path.resolve(__dirname + '/../../public')));
-
-var loggingRouter       = require('./modules/logging/router');
+var loggingRouter       = require('./logging/router');
 loggingRouter.attachTo(app);
 
-var publicRouter        = require('./modules/public/router');
+app.use(express.static(path.resolve(__dirname + '/../../public')));
+
+var publicRouter        = require('./api/public/router');
 publicRouter.attachTo(app);
 
-var authRouter          = require('./modules/auth/router');
+var authRouter          = require('./api/auth/router');
 authRouter.dataFolder   = path.resolve(__dirname + '/../../data');
 authRouter.attachTo(app);
 

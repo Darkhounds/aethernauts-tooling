@@ -21,7 +21,7 @@ function Contructor(){
         });
     };
     //
-    this.create     = function (email, token, profile, callback)                                                        {
+    this.create     = function (email, profile, callback)                                                               {
         _self.get(email, function(err, user)                                                                            {
             if (err) return callback(err);
             if (user) return callback("exists");

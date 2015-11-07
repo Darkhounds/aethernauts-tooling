@@ -1,7 +1,6 @@
 var router          = require('express').Router();
 var session         = require('express-session');
 var passport        = require('passport');
-var flash           = require('connect-flash');
 //
 var storeSessionFS  = require('./../../model/store-session-fs');
 var strategies      = require('./strategies');
@@ -25,7 +24,6 @@ module.exports      = new function()                                            
     router.use(session(_sessionCfg));
     router.use(passport.initialize());
     router.use(passport.session());
-    router.use(flash());
     //
     strategies.attachTo(passport);
     strategies.modelUsers = _self.modelUsers;

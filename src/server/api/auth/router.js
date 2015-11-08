@@ -55,11 +55,11 @@ module.exports      = new function()                                            
         next();
     });
     router.use('/api/auth/profile', function(req, res, next)                                                            {
-        res.send({data: req.user});
+        res.send(req.user);
     });
     router.use('/api/auth/logout', function(req, res, next)                                                             {
         req.logout();
-        res.send({data: 'Logged out'});
+        res.send({msg: 'Logged out'});
     });
     //
     // } endregion

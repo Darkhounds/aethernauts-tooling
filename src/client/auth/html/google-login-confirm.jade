@@ -13,10 +13,6 @@ html(lang="en")
                 params[pair[0]] = pair[1];
             }
 
-            request('/api/auth/googleauth?' + hash, function(event) {
-                console.log("1 -->", event.target.readyState, event.target.responseText);
-            });
-
             function request(url, callback) {
                 var xmlHttp = new XMLHttpRequest();
                 xmlHttp.onreadystatechange = callback
@@ -25,5 +21,12 @@ html(lang="en")
                 return xmlHttp;
             }
 
-    body
+            request('/api/auth/googleauth?' + hash, function(event) {
+
+                console.log("1 -->", event.target.readyState, event.target.responseText);
+
+                window.close();
+            });
+
+body
         div Popup - Confirmed

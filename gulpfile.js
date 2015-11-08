@@ -1,16 +1,18 @@
 var gulp        = require("gulp");
 var spawn       = require('child_process').spawn;
-var browserify  = require('browserify')({debug: true});
+var browserify  = require('browserify');
+var jadeify     = require('jadeify');
+var rename      = require('gulp-rename');
 var source      = require("vinyl-source-stream");
 var buffer      = require('vinyl-buffer');
 var concat      = require('gulp-concat');
 var uglify      = require('gulp-uglify');
 var rename      = require('gulp-rename');
 var sourcemaps  = require('gulp-sourcemaps');
+var streamify   = require('gulp-streamify');
 var jade        = require('gulp-jade');
 var minifyHTML  = require('gulp-minify-html');
 var stylus      = require('gulp-stylus');
-var htmlreplace = require('gulp-html-replace');
 
 gulp.task('default', ['server']);
 
@@ -45,26 +47,20 @@ function _startServer()                                                         
     });
 }
 
-browserify.add('./src/client/bootstrap.js');
-browserify.external(require.resolve('react', {expose: 'react'}));
-browserify.require('./src/client/bootstrap.js');
-browserify.require('react');
-
-gulp.task('client', ['client-compile'], function()                                                                      {
+gulp.task('client', ['client-compile', 'client-copy-html', 'client-compile-jade', 'client-compile-stylus'], function()  {
     console.log("\n Watching Client code:\n");
     //
-    return gulp.watch('./src/client/**/*.*', ['client-compile'], function(){
+    return gulp.watch('./src/client/**/*.*', ['client-compile', 'client-copy-html', 'client-compile-jade', 'client-compile-stylus'], function(){
         console.warn("\n --- Client code has been edited, recompiling...");
     });
 });
 
-gulp.task('client-compile', ['client-copy-html', 'client-compile-jade', 'client-compile-stylus'], function()            {
-    return browserify.bundle()
+gulp.task('client-compile', function()                                                                                  {
+    var bundler = browserify('./src/client/bootstrap.js', {debug:true, insertGlobals:true});
+    bundler.transform(jadeify);
+    return bundler.bundle()
         .pipe(source('main.js'))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true}))
-        .pipe(uglify())
-        .pipe(sourcemaps.write('./'))
+        //.pipe(streamify(uglify()))
         .pipe(gulp.dest('./public/lib/application/'));
 });
 

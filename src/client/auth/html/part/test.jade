@@ -1,0 +1,9 @@
+div#NAV.frame
+    ul
+        li Home
+        li Register
+        li
+            a(href="#" ng-click="login($event)" ng-show="!profile") Login
+            a(href="#" ng-click="logout($event)" ng-show="profile") Logout
+
+

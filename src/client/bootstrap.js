@@ -1,4 +1,9 @@
-var home = require('./core/js/home');
+var angular     = require('angular');
 
-var foo = new home();
+var app         = angular.module('myApp', []);
+
+app.factory('session', ['$http', require('./auth/js/service/session')]);
+
+app.directive('layout', require('./core/js/directive/layout'));
+app.directive('login', ['session', require('./auth/js/directive/login')]);
 

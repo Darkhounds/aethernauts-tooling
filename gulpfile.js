@@ -90,6 +90,19 @@ gulp.task('client-compile-stylus', function ()                                  
         .pipe(gulp.dest('./public/css/'));
 });
 
+gulp.task('client-compile-less', function () {
+    gulp.src(['./src/client/**/*.less', '!**/part/*.*'])
+        .pipe(sourcemaps.init())
+        .pipe(less({
+            paths: [
+                '.',
+                './node_modules/bootstrap-less'
+            ]
+        }))
+        .pipe(minifyCSS())
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('./public/css/'));
+});
 
 process.on('exit', function()                                                                                           {
     if (_server) _server.kill()

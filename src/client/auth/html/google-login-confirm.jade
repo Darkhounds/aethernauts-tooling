@@ -22,10 +22,7 @@ html(lang="en")
             }
 
             request('/api/auth/googleauth?' + hash, function(event) {
-
-                console.log("1 -->", event.target.readyState, event.target.responseText);
-
-                window.close();
+                if (event.target.readyState == 4) window.close();
             });
 
 body

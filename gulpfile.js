@@ -80,10 +80,11 @@ gulp.task('client-compile-jade', function()                                     
 });
 
 gulp.task('client-compile-stylus', function ()                                                                          {
-    return gulp.src(['./src/client/**/*.styl', '!**/part/*.*'])
+    return gulp.src(['./node_modules/bootstrap-styl/bootstrap/index.styl', './src/client/**/*.styl', '!**/part/*.*'])
         .pipe(sourcemaps.init())
         .pipe(stylus({
-            compress: true
+            compress: true,
+            paths: ['./node_modules/bootstrap-styl/']
         }))
         .pipe(concat('main.css'))
         .pipe(sourcemaps.write('.'))

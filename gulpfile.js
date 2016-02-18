@@ -15,11 +15,6 @@ var minifyHTML  = require('gulp-minify-html');
 var stylus      = require('gulp-stylus');
 var exorcist    = require('exorcist');
 
-// TODO REMOVE THIS DEPENDENCIES:
-var path        = require('path')
-var sourcemaps  = require('gulp-sourcemaps');
-var extractor   = require('gulp-extract-sourcemap');
-
 gulp.task('default', ['server']);
 
 gulp.task('server', function()                                                                                          {

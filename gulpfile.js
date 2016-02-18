@@ -13,6 +13,12 @@ var streamify   = require('gulp-streamify');
 var jade        = require('gulp-jade');
 var minifyHTML  = require('gulp-minify-html');
 var stylus      = require('gulp-stylus');
+var exorcist    = require('exorcist');
+
+// TODO REMOVE THIS DEPENDENCIES:
+var path        = require('path')
+var sourcemaps  = require('gulp-sourcemaps');
+var extractor   = require('gulp-extract-sourcemap');
 
 gulp.task('default', ['server']);
 
@@ -55,12 +61,13 @@ gulp.task('client', ['client-compile', 'client-copy-html', 'client-compile-jade'
     });
 });
 
-gulp.task('client-compile', function()                                                                                  {
+gulp.task('client-compile', function(){
     var bundler = browserify('./src/client/bootstrap.js', {debug:true, insertGlobals:true});
     bundler.transform(jadeify);
+
     return bundler.bundle()
+        .pipe(exorcist('./public/lib/application/main.js.map'))
         .pipe(source('main.js'))
-        //.pipe(streamify(uglify()))
         .pipe(gulp.dest('./public/lib/application/'));
 });
 
@@ -80,32 +87,17 @@ gulp.task('client-compile-jade', function()                                     
 });
 
 gulp.task('client-compile-stylus', function ()                                                                          {
-    return gulp.src(['./node_modules/bootstrap-styl/bootstrap/index.styl', './src/client/**/*.styl', '!**/part/*.*'])
+    return gulp.src(['./node_modules/bootstrap-styl/bootstrap/index.styl', './src/client/core/css/layout.styl'])
         .pipe(sourcemaps.init())
         .pipe(stylus({
             compress: true,
-            paths: ['./node_modules/bootstrap-styl/']
+            paths: ['./node_modules/bootstrap-styl/', './src/client/']
         }))
         .pipe(concat('main.css'))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./public/css/'));
 });
 
-gulp.task('client-compile-less', function () {
-    gulp.src(['./src/client/**/*.less', '!**/part/*.*'])
-        .pipe(sourcemaps.init())
-        .pipe(less({
-            paths: [
-                '.',
-                './node_modules/bootstrap-less'
-            ]
-        }))
-        .pipe(minifyCSS())
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('./public/css/'));
-});
-
 process.on('exit', function()                                                                                           {
     if (_server) _server.kill()
 });
-

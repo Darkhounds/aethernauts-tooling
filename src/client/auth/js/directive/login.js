@@ -4,6 +4,7 @@ module.exports  = function(session)                                             
         replace:    'true',
         template:   require('./../../html/template/menu.jade'),
         controller: ['$scope', '$window', '$timeout', function($scope, $window, $timeout){
+            $scope.session = session;
             $scope.profile  = null;
 
             $scope.login    = function($event){
@@ -11,24 +12,17 @@ module.exports  = function(session)                                             
                 var timer       = setInterval(function(){
                     if (!popup.closed) return;
                     clearInterval(timer);
-                    _checkSession();
+                    session.check();
                 }, 100);
                 $event.preventDefault();
             };
 
             $scope.logout = function($event){
-                session.logout(function(err, data){
-                    $timeout(function() { $scope.profile = null; })
-                });
+                session.logout();
                 $event.preventDefault();
             };
 
-            function _checkSession()                                                                                    {
-                session.check(function(err, data){
-                    $timeout(function() { $scope.profile = !err?data:null; });
-                });
-            }
-            _checkSession();
+            session.check();
         }]
     };
 };

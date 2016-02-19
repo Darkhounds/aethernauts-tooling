@@ -7,9 +7,9 @@ module.exports  = function($http) {
         $http({ method: 'GET', url: '/api/auth/profile'})
             .then(function (response) {
                 _profile = !response.data.error?response.data:null;
-                callback(response.data.error, _profile);
+                if (callback) callback(response.data.error, _profile);
             }, function (err) {
-                callback(err, response);
+                if (callback) callback(err, response);
             });
     };
 
@@ -17,9 +17,9 @@ module.exports  = function($http) {
         $http({ method: 'GET', url: '/api/auth/logout'})
             .then(function (response) {
                 _profile = null;
-                callback(null);
+                if (callback) callback(null);
             }, function (err) {
-                callback(err, response);
+                if (callback) callback(err, response);
             });
     };
 

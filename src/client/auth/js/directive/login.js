@@ -2,7 +2,7 @@ module.exports  = function(session)                                             
     return {
         restrict:   'E',
         replace:    'true',
-        template:   require('./../../html/part/menu.jade'),
+        template:   require('./../../html/template/menu.jade'),
         controller: ['$scope', '$window', '$timeout', function($scope, $window, $timeout){
             $scope.profile  = null;
 
@@ -25,7 +25,6 @@ module.exports  = function(session)                                             
 
             function _checkSession()                                                                                    {
                 session.check(function(err, data){
-                    console.log('Response:', err, data);
                     $timeout(function() { $scope.profile = !err?data:null; });
                 });
             }

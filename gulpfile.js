@@ -78,7 +78,7 @@ gulp.task('client-copy-html', function()                                        
 });
 
 gulp.task('client-compile-jade', function()                                                                             {
-    return gulp.src(['./src/client/**/*.jade', '!**/part/*.*'])
+    return gulp.src(['./src/client/**/*.jade', '!**/template/*.*'])
         .pipe(jade({locals: {}}))
         .pipe(gulp.dest('./public/'))
 });

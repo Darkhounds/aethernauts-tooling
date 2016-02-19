@@ -6,4 +6,5 @@ app.factory('session', ['$http', require('./auth/js/service/session')]);
 
 app.directive('layout', require('./core/js/directive/layout'));
 app.directive('login', ['session', require('./auth/js/directive/login')]);
+app.directive('sidemenu', ['session', require('./menu/js/directive/sidemenu')]);
 

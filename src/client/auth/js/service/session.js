@@ -1,13 +1,13 @@
 module.exports  = function($http) {
 
-    var _session = null;
-    Object.defineProperty(this, 'session', {get: function() {return _session; }});
+    var _profile = null;
+    Object.defineProperty(this, 'profile', {get: function() {return _profile; }});
 
     this.check = function(callback){
         $http({ method: 'GET', url: '/api/auth/profile'})
             .then(function (response) {
-                _session = !response.data.error?response.data:null;
-                callback(response.data.error, _session);
+                _profile = !response.data.error?response.data:null;
+                callback(response.data.error, _profile);
             }, function (err) {
                 callback(err, response);
             });
@@ -16,7 +16,7 @@ module.exports  = function($http) {
     this.logout = function(callback){
         $http({ method: 'GET', url: '/api/auth/logout'})
             .then(function (response) {
-                _session = null;
+                _profile = null;
                 callback(null);
             }, function (err) {
                 callback(err, response);

@@ -2,7 +2,7 @@ module.exports  = function(session)                                             
     return {
         restrict:   'E',
         replace:    'true',
-        template:   require('./../../html/template/menu.jade'),
+        template:   require('./../../html/template/top.jade'),
         controller: ['$scope', '$window', '$timeout', function($scope, $window, $timeout){
             $scope.session = session;
             $scope.profile  = null;

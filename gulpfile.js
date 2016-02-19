@@ -13,7 +13,6 @@ var streamify   = require('gulp-streamify');
 var jade        = require('gulp-jade');
 var minifyHTML  = require('gulp-minify-html');
 var stylus      = require('gulp-stylus');
-var exorcist    = require('exorcist');
 
 gulp.task('default', ['server']);
 
@@ -61,8 +60,11 @@ gulp.task('client-compile', function(){
     bundler.transform(jadeify);
 
     return bundler.bundle()
-        .pipe(exorcist('./public/lib/application/main.js.map'))
         .pipe(source('main.js'))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(streamify(uglify()))
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./public/lib/application/'));
 });
 

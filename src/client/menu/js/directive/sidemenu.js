@@ -6,9 +6,6 @@ module.exports  = function(session)                                             
         controller: ['$scope', function($scope){
             $scope.session = session;
 
-            $scope.$watch('session.profile', function(){
-                console.log(session.profile);
-            });
         }]
     };
 };

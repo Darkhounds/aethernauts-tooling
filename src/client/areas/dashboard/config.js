@@ -1,11 +1,19 @@
-module.exports  = function($stateProvider, $urlRouterProvider){
-    $urlRouterProvider.otherwise("/dashboard");
+module.exports  = function($stateProvider){
     //
-    $stateProvider.state('dashboard', {
+    $stateProvider.state('guest.dashboard', {
         url: "/dashboard",
         views: {
             "center": {
-                template: require("./html/template/center.jade"),
+                template: require("./html/template/guest/center.jade")
+            }
+        }
+    });
+    //
+    $stateProvider.state('admin.dashboard', {
+        url: "/dashboard",
+        views: {
+            "center": {
+                template: require("./html/template/admin/center.jade")
             }
         }
     });

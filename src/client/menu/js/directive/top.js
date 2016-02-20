@@ -1,28 +1,10 @@
-module.exports  = function(session)                                                                                     {
+module.exports  = function() {
     return {
         restrict:   'E',
         replace:    'true',
         template:   require('./../../html/template/top.jade'),
-        controller: ['$scope', '$window', '$timeout', function($scope, $window, $timeout){
-            $scope.session = session;
-            $scope.profile  = null;
+        controller: ['$scope', function($scope){
 
-            $scope.login    = function($event){
-                var popup       = $window.open('/auth/html/google-login.html', 'google-oauth', 'width=600,height=400');
-                var timer       = setInterval(function(){
-                    if (!popup.closed) return;
-                    clearInterval(timer);
-                    session.check();
-                }, 100);
-                $event.preventDefault();
-            };
-
-            $scope.logout = function($event){
-                session.logout();
-                $event.preventDefault();
-            };
-
-            session.check();
         }]
     };
 };

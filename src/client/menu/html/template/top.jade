@@ -4,8 +4,6 @@ div#NAV.frame
             button(class="btn btn-default btn-sm" disabled) Home
         li
             button(class="btn btn-default btn-sm" disabled) Register
-        li
-            button(ng-click="login($event)" ng-show="!session.profile" class="btn btn-default btn-sm") Login
-            button(ng-click="logout($event)" ng-show="session.profile" class="btn btn-default btn-sm") Logout
+        li(ui-view="auth")
 
 

@@ -1,9 +1,9 @@
 module.exports  = function($stateProvider) {
-    $stateProvider.state('worlds', {
+    $stateProvider.state('admin.worlds', {
         url: "/worlds",
         views: {
             "center": {
-                template: require("./html/template/center.jade"),
+                template: require("./html/template/center.jade")
             }
         }
     });

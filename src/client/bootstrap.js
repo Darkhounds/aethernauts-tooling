@@ -12,3 +12,4 @@ app.directive('menuSide', ['session', require('./menu/js/directive/side')]);
 app.directive('contextCenter', ['$state', require('./context/js/directive/center')]);
 
 app.config(['$stateProvider', '$urlRouterProvider', require('./areas/dashboard/config')]);
+app.config(['$stateProvider', require('./areas/worlds/config')]);

@@ -2,12 +2,10 @@ div#LAYOUT(layout)
     div#TOP
         div#HEADER.frame
             include header
-        menu-top
+        div#NAV.frame(ui-view="auth")
     div#MIDDLE
-        div#LEFT.frame
-            menu-side
-        div#CENTER.frame
-            context-center
+        div#LEFT.frame(ui-view="menu")
+        div#CENTER.frame(ui-view="center")
         div#RIGHT.frame
             include banner
     div#BOTTOM

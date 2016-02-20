@@ -5,6 +5,9 @@ module.exports  = function($stateProvider) {
             "auth": {
                 template: require("./html/template/login.jade"),
                 controller: ["$scope", "$window", "session", require("./js/controller/login")]
+            },
+            "menu": {
+                template: require("./html/template/menu-guest.jade")
             }
         }
     });
@@ -14,6 +17,9 @@ module.exports  = function($stateProvider) {
             "auth": {
                 template: require("./html/template/logout.jade"),
                 controller: ["$scope", "session", require("./js/controller/logout")]
+            },
+            "menu": {
+                template: require("./html/template/menu-admin.jade")
             }
         }
     });

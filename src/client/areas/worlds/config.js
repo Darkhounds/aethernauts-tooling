@@ -2,7 +2,8 @@ module.exports  = function($stateProvider) {
     $stateProvider.state('admin.worlds', {
         url: "/worlds",
         views: {
-            "center": {
+            "center@": {
+                onEnter: function(){ console.log("Hummmm....") },
                 template: require("./html/template/center.jade")
             }
         }

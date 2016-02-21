@@ -6,14 +6,15 @@ module.exports  = function(serverAPI) {
     Object.defineProperty(this, 'selected', {get: function() {return _selected; }});
 
     this.listWorlds = function(callback, overrideUpdate) {
-        serverAPI.getWorldsList(function(err, data){
-            _parseListData(response.data);
+        serverAPI.worldsGetList(function(err, data){
+            console.log("", data);
+            _parseListData(data);
         });
     };
 
     this.getWorld = function(name, callback) {
-        serverAPI.getWorldsDetail(name, function(err, data){
-            _world = response.data;
+        serverAPI.worldsGetDetail(name, function(err, data){
+            _world = data;
         });
     };
 

@@ -2,7 +2,7 @@ module.exports  = function($http) {
 
     this.worldsGetList = function(callback) {
         // TODO: Remove this after the server api is implemented
-        if (callback) callback({
+        if (callback) callback(null, {
             world1: _debugWorld(),
             world2: _debugWorld(),
             world3: _debugWorld(),
@@ -23,7 +23,7 @@ module.exports  = function($http) {
 
     this.worldsGetDetail = function(name, callback) {
         // TODO: Remove this after the server api is implemented
-        if (callback) callback(_debugWorld());
+        if (callback) callback(null, _debugWorld());
 
         // TODO: Uncomment this after the server api is implemented
         //$http({

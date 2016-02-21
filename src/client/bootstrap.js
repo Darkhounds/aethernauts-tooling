@@ -16,6 +16,6 @@ app.config(['$stateProvider', require('./areas/dashboard/config')]);
 
 // Worlds Module
 app.factory('worldsData', ['serverAPI', require('./areas/worlds/js/service/worldsData')]);
-app.directive('worldsList', ['worlds', require('./areas/worlds/js/directive/list')]);
+app.directive('worldsList', ['worldsData', require('./areas/worlds/js/directive/list')]);
 app.config(['$stateProvider', require('./areas/worlds/config')]);
 

@@ -1,10 +1,10 @@
-module.exports  = function(worlds) {
+module.exports  = function(worldsData) {
     return {
         restrict:   'E',
         replace:    'true',
         template:   require('./../../html/template/list.jade'),
         controller: ['$scope', function($scope){
-            $scope.worlds = worlds;
+            $scope.worldsData = worldsData;
         }]
     };
 };

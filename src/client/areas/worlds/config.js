@@ -4,7 +4,7 @@ module.exports  = function($stateProvider) {
         views: {
             "center@": {
                 onEnter: function(){ console.log("Hummmm....") },
-                template: require("./html/template/center.jade")
+                template: require("./html/template/list.jade")
             }
         }
     });

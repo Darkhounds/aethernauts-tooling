@@ -1,58 +1,40 @@
 module.exports  = function($http) {
-    var _list = {};
-    Object.defineProperty(this, 'list', {get: function() {return _list; }});
 
-    var _selected = null;
-    Object.defineProperty(this, 'selected', {get: function() {return _selected; }});
-
-    this.listWorlds = function(callback, overrideUpdate) {
+    this.worldsGetList = function(callback) {
         // TODO: Remove this after the server api is implemented
-        if (!overrideUpdate) _parseListData({
+        if (callback) callback({
             world1: _debugWorld(),
             world2: _debugWorld(),
             world3: _debugWorld(),
             world4: _debugWorld(),
             world5: _debugWorld()
         });
-        if (callback) callback(response.data);
 
         // TODO: Uncomment this after the server api is implemented
-        //$http({ method: 'GET', url: '/api/worlds/list'})
-        //    .then(function (response) {
-        //        if (!response.data.error && !overrideUpdate) _parseListData(response.data);
-        //        if (callback) callback(response.data);
-        //    }, function (err) {
-        //        if (callback) callback(err, response);
-        //    });
+        //$http({
+        //    method: 'GET',
+        //    url:    '/api/worlds/list'
+        //}).then(function (response) {
+        //    if (callback) callback(null, response.data);
+        //}, function (err) {
+        //    if (callback) callback(err, response);
+        //});
     };
 
-    this.getWorld = function(name, callback) {
+    this.worldsGetDetail = function(name, callback) {
         // TODO: Remove this after the server api is implemented
-        if (!overrideUpdate) _selected = _debugWorld();
-        if (callback) callback(response.data);
+        if (callback) callback(_debugWorld());
 
         // TODO: Uncomment this after the server api is implemented
-        //$http({ method: 'GET', url: '/api/worlds/detail?name=' + name})
-        //    .then(function (response) {
-        //        if (!response.data.error && !overrideUpdate) _world = response.data;
-        //        if (callback) callback(response.data);
-        //    }, function (err) {
-        //        if (callback) callback(err, response);
-        //    });
+        //$http({
+        //    method: 'GET',
+        //    url:    '/api/worlds/detail?name=' + name
+        //}).then(function (response) {
+        //    if (callback) callback(null, response.data);
+        //}, function (err) {
+        //    if (callback) callback(err, response);
+        //});
     };
-
-    function _parseListData(worldsData) {
-        _addWorlds(worldsData);
-        _cleaRemovedWorlds(worldsData);
-    }
-
-    function _addWorlds(worldsData) {
-        for (var name in worldsData) _list[name] = worldsData[name];
-    }
-
-    function _cleaRemovedWorlds(worldsData) {
-        for (var name in _list) if (!worldsData[name]) delete _list[name];
-    }
 
     // TODO: Remove this after the server api implementation
     var _debugCount = 0;
@@ -100,6 +82,5 @@ module.exports  = function($http) {
         }
     }
 
-    this.listWorlds();
     return this;
 };

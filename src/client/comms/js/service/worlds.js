@@ -1,6 +1,9 @@
 module.exports  = function($http) {
-    var _worlds = {};
-    var _world = null;
+    var _list = {};
+    Object.defineProperty(this, 'list', {get: function() {return _list; }});
+
+    var _selected = null;
+    Object.defineProperty(this, 'selected', {get: function() {return _selected; }});
 
     this.listWorlds = function(callback, overrideUpdate) {
         // TODO: Remove this after the server api is implemented
@@ -25,7 +28,7 @@ module.exports  = function($http) {
 
     this.getWorld = function(name, callback) {
         // TODO: Remove this after the server api is implemented
-        if (!overrideUpdate) _world = _debugWorld();
+        if (!overrideUpdate) _selected = _debugWorld();
         if (callback) callback(response.data);
 
         // TODO: Uncomment this after the server api is implemented
@@ -44,20 +47,20 @@ module.exports  = function($http) {
     }
 
     function _addWorlds(worldsData) {
-        for (var name in worldsData) _worlds[name] = worldsData[name];
+        for (var name in worldsData) _list[name] = worldsData[name];
     }
 
     function _cleaRemovedWorlds(worldsData) {
-        for (var name in _worlds) if (!worldsData[name]) delete _worlds[name];
+        for (var name in _list) if (!worldsData[name]) delete _list[name];
     }
-
-    this.listWorlds();
 
     // TODO: Remove this after the server api implementation
     var _debugCount = 0;
     function _debugWorld(){
+        console.log(_debugCount);
+        _debugCount++;
         return {
-            name: "Debug world " + (++_debugCount),
+            name: "Debug world " + _debugCount,
             description: "A debug world hardcoded into the worlds service classes with he sole purpose of testing the worlds list view",
             continents: {
                 continent1: {
@@ -98,5 +101,6 @@ module.exports  = function($http) {
         }
     }
 
+    this.listWorlds();
     return this;
 };

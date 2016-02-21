@@ -1,2 +1,2 @@
-div.content
-    | Worlds...
+div
+    div(ng-repeat="(id, world) in worlds.list") {{id}} - {{world.name}}

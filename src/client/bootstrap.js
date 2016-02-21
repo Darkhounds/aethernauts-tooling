@@ -7,6 +7,7 @@ app.factory('session', ['$http', '$rootScope', '$state', '$location', require('.
 app.factory('worlds', ['$http', require('./comms/js/service/worlds')]);
 
 app.directive('layout', require('./core/js/directive/layout'));
+app.directive('worldsList', ['worlds', require('./areas/worlds/js/directive/list')]);
 
 app.config(['$stateProvider', require('./areas/auth/config')]);
 app.config(['$stateProvider', require('./areas/dashboard/config')]);

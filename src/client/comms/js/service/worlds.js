@@ -57,7 +57,6 @@ module.exports  = function($http) {
     // TODO: Remove this after the server api implementation
     var _debugCount = 0;
     function _debugWorld(){
-        console.log(_debugCount);
         _debugCount++;
         return {
             name: "Debug world " + _debugCount,

@@ -5,7 +5,6 @@ module.exports  = function(worlds) {
         template:   require('./../../html/template/list.jade'),
         controller: ['$scope', function($scope){
             $scope.worlds = worlds;
-            console.log('-------->', worlds);
         }]
     };
 };
